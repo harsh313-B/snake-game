@@ -1,4 +1,4 @@
-# Simple Snake Game using Pygame
+#Snake Game using Pygame
 import pygame
 
 pygame.init()
