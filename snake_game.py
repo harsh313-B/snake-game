@@ -31,16 +31,41 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
+    #move the snake
+    snake_x += snake_x_change
+    snake_y += snake_y_change
+    
     #update the snake lisk
     snake_head = []
     snake_head.append(snake_x)
     snake_head.append(snake_y)
     snake_list.append(snake_head)
+    if len(snake_list) > snake_length:
+        del snake_list[0]
+
+    #set the game speed
+    clock = pygame.time.Clock()
+    clock.tick(snake_speed)
 
     #Draw the game objects
     window.fill("white")
     draw_snake(snake_block_size, snake_list)
     pygame.display.flip()
 
+    #get the user input
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        snake_x_change = -snake_block_size
+        snake_y_change = 0
+    elif keys[pygame.K_RIGHT]:
+        snake_x_change = snake_block_size
+        snake_y_change = 0
+    elif keys[pygame.K_UP]:
+        snake_y_change = -snake_block_size
+        snake_x_change = 0
+    elif keys[pygame.K_DOWN]:
+        snake_y_change = snake_block_size
+        snake_x_change = 0
+        
 pygame.quit()
 
