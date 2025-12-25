@@ -1,5 +1,6 @@
 #Snake Game using Pygame
 import pygame
+import random 
 
 pygame.init()
 
@@ -8,16 +9,38 @@ window_width = 500
 window_height = 500
 window = pygame.display.set_mode((window_width, window_height))
 pygame.display.set_caption("Snake Game")
+# create clock once
+clock = pygame.time.Clock()
+
+#set up the fonts
+font_style = pygame.font.SysFont("helvetica", 30, 0, 1)
+font_style2 = pygame.font.SysFont("helvetica", 50, 1, 1)
+
+#Define the function to display the score
+def display_score(score):
+    score_text = font_style.render("Score: " + str(score), 1, "black")
+    window.blit(score_text, [0, 0])
+
+#define function to dsiplay game over:
+def display_game_over():
+    game_over_text = font_style2.render("Game Over!", 1, "red")
+    window.blit(game_over_text, (150, 225))
+    pygame.display.flip()
 
 #Set up the snake 
 snake_block_size = 10
 snake_speed = 15
 snake_list = []
 snake_length = 1
-snake_x = window_width / 2
-snake_y = window_height / 2
+snake_x = round((window_width / 2) / snake_block_size) * snake_block_size
+snake_y = round((window_height / 2) / snake_block_size) * snake_block_size
 snake_x_change = 0
 snake_y_change = 0
+
+#Set up the food 
+food_block_size = snake_block_size
+food_x = round(random.randrange(0, window_width - food_block_size) / float(snake_block_size)) * snake_block_size
+food_y = round(random.randrange(0, window_height - food_block_size) / float(snake_block_size)) * snake_block_size
 
 #Define the function to draw the snake
 def draw_snake(snake_block_size, snake_list):
@@ -35,7 +58,13 @@ while run:
     snake_x += snake_x_change
     snake_y += snake_y_change
     
-    #update the snake lisk
+    #checking for collision with food 
+    if snake_x == food_x and snake_y == food_y:
+        food_x = round(random.randrange(0, window_width - food_block_size) / snake_block_size) * snake_block_size
+        food_y = round(random.randrange(0, window_height - food_block_size) / snake_block_size) * snake_block_size
+        snake_length += 1
+
+    #update the snake list
     snake_head = []
     snake_head.append(snake_x)
     snake_head.append(snake_y)
@@ -43,13 +72,20 @@ while run:
     if len(snake_list) > snake_length:
         del snake_list[0]
 
+    #check for collision with walls
+    if snake_x < 0 or snake_x >= window_width or snake_y < 0 or snake_y >= window_height:
+        display_game_over()
+        pygame.time.delay(2000)
+        run = False 
+
     #set the game speed
-    clock = pygame.time.Clock()
     clock.tick(snake_speed)
 
     #Draw the game objects
     window.fill("white")
+    pygame.draw.rect(window, "green", [food_x, food_y, food_block_size, food_block_size])
     draw_snake(snake_block_size, snake_list)
+    display_score(snake_length - 1)
     pygame.display.flip()
 
     #get the user input
