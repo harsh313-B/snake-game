@@ -105,16 +105,16 @@ while run:
 
     #get the user input
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] and snake_x_change != snake_block_size:
         snake_x_change = -snake_block_size
         snake_y_change = 0
-    elif keys[pygame.K_RIGHT]:
+    elif keys[pygame.K_RIGHT] and snake_x_change != -snake_block_size:
         snake_x_change = snake_block_size
         snake_y_change = 0
-    elif keys[pygame.K_UP]:
+    elif keys[pygame.K_UP] and snake_y_change != -snake_block_size:
         snake_y_change = -snake_block_size
         snake_x_change = 0
-    elif keys[pygame.K_DOWN]:
+    elif keys[pygame.K_DOWN] and snake_y_change != snake_block_size:
         snake_y_change = snake_block_size
         snake_x_change = 0
         
