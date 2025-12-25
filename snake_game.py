@@ -60,8 +60,16 @@ while run:
     
     #checking for collision with food 
     if snake_x == food_x and snake_y == food_y:
-        food_x = round(random.randrange(0, window_width - food_block_size) / snake_block_size) * snake_block_size
-        food_y = round(random.randrange(0, window_height - food_block_size) / snake_block_size) * snake_block_size
+        #generate a new position for the food
+        food_on_snake = True
+        while food_on_snake:
+            food_x = round(random.randrange(0, window_width - food_block_size) / snake_block_size) * snake_block_size
+            food_y = round(random.randrange(0, window_height - food_block_size) / snake_block_size) * snake_block_size
+            food_on_snake = False
+            for block in snake_list:
+                if block[0] == food_x and block[1] == food_y:
+                    food_on_snake = True
+                    break
         snake_length += 1
 
     #update the snake list
@@ -80,6 +88,13 @@ while run:
 
     #set the game speed
     clock.tick(snake_speed)
+
+    #check for collision with the snake's own body
+    for block in snake_list[:-1]:
+        if block == snake_head:
+            display_game_over()
+            pygame.time.delay(2000)
+            run = False
 
     #Draw the game objects
     window.fill("white")
