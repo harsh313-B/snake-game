@@ -111,10 +111,10 @@ while run:
     elif keys[pygame.K_RIGHT] and snake_x_change != -snake_block_size:
         snake_x_change = snake_block_size
         snake_y_change = 0
-    elif keys[pygame.K_UP] and snake_y_change != -snake_block_size:
+    elif keys[pygame.K_UP] and snake_y_change != snake_block_size:
         snake_y_change = -snake_block_size
         snake_x_change = 0
-    elif keys[pygame.K_DOWN] and snake_y_change != snake_block_size:
+    elif keys[pygame.K_DOWN] and snake_y_change != -snake_block_size:
         snake_y_change = snake_block_size
         snake_x_change = 0
         
